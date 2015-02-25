@@ -1,0 +1,133 @@
+<html>
+<head>
+	<title>BubbleTeaRender</title>
+	<script src="/brushes.js"></script>
+	<script src="/paths.js"></script>
+	<script src="/main.js"></script>
+	<script src="/victor.js"></script>
+	<style type="text/css">
+		canvas{
+			cursor: crosshair;
+			position: absolute;
+			left: 0;
+			top: 0;
+			opacity: 0;
+			-webkit-transition: opacity 5s ease-in-out;
+		    -moz-transition: opacity 5s ease-in-out;
+		    transition: opacity 5s ease-in-out;
+		}
+		#from{
+			z-index: 0;
+		}
+		#background: {
+			z-index: 1;
+		}
+		#to{
+			z-index: 2;
+		}
+		body{
+			margin: 0;
+			padding: 0;
+		}
+		#bg{
+			z-index: 0;
+			position: fixed;
+			width: 100%;
+			height: 100%;
+			background:rgba(0,0,0,1);
+			margin: 0;
+			padding: 0;
+/*			-webkit-transition: background-color 0.1s ease-in-out;
+		    -moz-transition: background-color 0.1s ease-in-out;
+		    transition: background-color 0.1s ease-in-out;*/
+		}
+		/*.knob input{
+			display: inline-block;
+		}
+		.label{
+			width: 100px;
+			display: inline-block;
+		}
+		#knobs{
+			position: absolute;
+			right: 0;
+			top: 0;
+		}*/
+
+	</style>
+</head>
+<body>
+	<div id="bg"></div>
+	<canvas id="from"></canvas>
+	<canvas id="background"></canvas>
+	<canvas id="to"></canvas>
+<!-- 	<div id="knobs">
+		<div class="knob">
+			<div class="label">
+				wind_chill
+			</div>
+			<input type="range" min=-40 max=40 value=20 id="wind_chill">
+		</div>
+		<div class="knob">
+			<div class="label">
+				wind_direction
+			</div>
+			<input type="range" min=0 max=360 value=20 id="wind_direction">
+		</div>
+		<div class="knob">
+			<div class="label">
+				wind_speed
+			</div>
+			<input type="range" min=0 max=60 value=20 id="wind_speed">
+		</div>
+		<div class="knob">
+			<div class="label">
+				atmos_humidity
+			</div>
+			<input type="range" min=0 max=100 value=40 id="atmos_humidity">
+		</div>
+		<div class="knob">
+			<div class="label">
+				atmos_visibility
+			</div>
+			<input type="range" min=0 max=30 value=1 id="atmos_visibility">
+		</div>
+		<div class="knob">
+			<div class="label">
+				atmos_pressure
+			</div>
+			<input type="range" min=20 max=40 value=4 id="atmos_pressure">
+		</div>
+		<div class="knob">
+			<div class="label">
+				atmos_rising
+			</div>
+			<input type="range" min=0 max=2 value=0 id="atmos_rising">
+		</div>
+		<div class="knob">
+			<div class="label">
+				code
+			</div>
+			<input type="range" min=0 max=47 value=20 id="code">
+		</div>
+		<div class="knob">
+			<div class="label">
+				temp
+			</div>
+			<input type="range" min=30 max=100 value=40 id="temp">
+		</div>
+		<div class="knob">
+			<div class="label">
+				day
+			</div>
+			<input type="range" min=1 max=7 value=1 id="day">
+		</div>
+		<div class="knob">
+			<div class="label">
+				time
+			</div>
+			<input type="range" min=0 max=1440 value=20 id="time">
+		</div>
+	</div> -->
+</body>
+</html>
