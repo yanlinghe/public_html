@@ -31,6 +31,59 @@
 						<div class="content content-left">
 							<article class="box post">
 								<header>
+									<p>Welcome Back + Push / Pop iOS function</p>
+									<ul class="meta">
+										<li class="icon fa-clock-o">March 31, 2015</li>
+									</ul>
+								</header>
+								<p>
+									As I said I was busy with my app developing last month, so don't have time to write my blog. Now I am comming back!! After fighting with the iOS design and implementation for a while. I got some animation and design tricks, and hope to help others who are struggling with the same problem and save you time a little bit.
+
+									1. PUSH / POP from other directions
+									iOS default push is from the right. To change to the other direction, define a custom segue and assign a class for it. For example, if you want the push from left, define class:
+
+									@objc(LeftPushSegue)
+									class LeftPushSegue: UIStoryboardSegue {
+										override func perform() {
+											var sourceViewController = self.sourceViewController as UIViewController
+											var destinationViewController = self.destinationViewController as UIViewController
+
+											let transition = CATransition()
+											transition.type = kCATransitionPush
+											transition.subtype = kCATransitionFromLeft
+
+											sourceViewController.navigationController?.view.layer.addAnimation(transition, forKey: kCATransition)
+											sourceViewController.navigationController?.pushViewController(destinationViewController, animated: false)
+										}
+									}
+
+									And in the controller that pushed in, add guesture recognizer:
+									let popGestureRecognizer = UISwipeGestureRecognizer()
+
+									Link function in the ViewDidLoad() function:
+
+									override func viewDidLoad() {
+										super.viewDidLoad()
+
+										popGestureRecognizer.direction = .Left
+										popGestureRecognizer.addTarget(self, action: "popController")
+										view.addGestureRecognizer(imageToCameraGestureRecognizer)
+									}
+
+									Add the popController function. You can also set it as a @IBAction function and link a navigation bar item on it as the back button.
+
+									func popController() {
+										let popTransition = CATransition()
+										popTransition.type = kCATransitionReveal
+										popTransition.subtype = kCATransitionFromRight
+
+										self.navigationController?.view.layer.addAnimation(popTransition, forKey: kCATransition)
+										self.navigationController?.popToRootViewControllerAnimated(false)
+									}
+								</p>
+							</article>
+							<article class="box post">
+								<header>
 									<p>Crazy New Year</p>
 									<ul class="meta">
 										<li class="icon fa-clock-o">February 18, 2015</li>
