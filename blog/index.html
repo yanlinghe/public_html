@@ -48,17 +48,17 @@
 								<p>
 									@objc(LeftPushSegue)<br>
 									class LeftPushSegue: UIStoryboardSegue {<br>
-										override func perform() {<br>
-											var sourceViewController = self.sourceViewController as UIViewController<br>
-											var destinationViewController = self.destinationViewController as UIViewController<br>
+									&nbsp override func perform() {<br>
+									&nbsp &nbsp var sourceViewController = self.sourceViewController as UIViewController<br>
+									&nbsp &nbsp var destinationViewController = self.destinationViewController as UIViewController<br>
 
-											let transition = CATransition()<br>
-											transition.type = kCATransitionPush<br>
-											transition.subtype = kCATransitionFromLeft<br>
+									&nbsp &nbsp let transition = CATransition()<br>
+									&nbsp &nbsp transition.type = kCATransitionPush<br>
+									&nbsp &nbsp transition.subtype = kCATransitionFromLeft<br>
 
-											sourceViewController.navigationController?.view.layer.addAnimation(transition, forKey: kCATransition)<br>
-											sourceViewController.navigationController?.pushViewController(destinationViewController, animated: false)<br>
-										}<br>
+									&nbsp &nbsp sourceViewController.navigationController?.view.layer.addAnimation(transition, forKey: kCATransition)<br>
+									&nbsp &nbsp sourceViewController.navigationController?.pushViewController(destinationViewController, animated: false)<br>
+									&nbsp }<br>
 									}<br>
 								</p>
 
