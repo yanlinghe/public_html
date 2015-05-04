@@ -1,0 +1,61 @@
+
+*, *:after, *:before { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+body, html { font-size: 100%; padding: 0; margin: 0; height: 100%;}
+
+.dark_grey {background-color: #444945;  padding: 20px 0 20px 0}
+.beige {background-color: #F2EDE7;  padding: 20px 0 20px 0}
+.light_grey{background-color: #F2EDE7; padding: 20px 0 20px 0}
+.key{background-color: #E29782;  padding: 20px 0 20px 0}
+
+.subtitle {
+	text-align: center;
+	font-family: apercubold, sans-serif;
+	font-size: 18px;
+	font-weight: 500;
+	margin-top: 15px;
+}
+
+.intro-text {
+  text-align: center;
+  font-family: apercubold, sans-serif;
+	font-size: 14px;
+  min-height: 72px;
+  margin: 0px auto;
+  max-width: 700px;
+  letter-spacing: 0.5px;
+}
+
+#header {
+	width:100%;
+	padding: 90px 0px 10px 0px;
+	height: 390px;
+}
+
+.center {
+	display: block;
+	margin: auto auto;
+}
+
+.main_title {
+	display: block;
+	margin: auto auto;
+	font-family: apercubold, sans-serif;
+	font-weight: 600;
+	text-align: center;
+	width: 600px;
+	padding: 18px 0px 14px 0px;
+	color: #F2EDE7;
+	text-transform: uppercase;
+	font-size: 54px;
+	border-top: solid;
+	border-color: #F2EDE7;
+	border-bottom: solid;
+	letter-spacing: 7px;
+}
+
+#greca_1 {
+	height:10px;
+	margin:-20px auto;
+	background-image:url('img/tile_greca_1.png');
+	background-repeat:repeat-x;
+}

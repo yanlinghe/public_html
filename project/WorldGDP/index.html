@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Datamap GDP</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="d3.slider.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+    <script src="http://datamaps.github.io/scripts/datamaps.world.min.js"></script>
+    <script src="d3.slider.js"></script>
+</head>
+
+<body> 
+  <header id="header" class="dark_grey">
+    <div style="position:relative; z-index:5">
+      <p class="main_title" style="border-top-width:14px;	border-bottom-width:14px;">World's GDP</p>
+      <p class="subtitle" style="color:#F2EDE7">~ from 1960 to 2013 ~</p>
+      <p class="intro-text" style="color:#F2EDE7">Money isn't everything, but it can be a good measurement of world's development. Discover how world's economy developed based on world's GDP (Gross Domestic Product) in current US$ from 1960 to 2013, based on <a href="http://data.worldbank.org/data-catalog/world-development-indicators" style="color: #DFD6C7; text-decoration:underline" >World Development Indicators</a> from The World Bank. See each year's world GDP map by sliding the slider, and hover over the country of the map to learn more about each country's GDP detail.</p>
+    </div>
+    <div style="position:relative; bottom:320px; z-index:0; text-align:center; opacity:.7">
+      <img src="img/puffpuff.gif">
+    </div>
+  </header>
+  <section id="MAP" class="beige">
+    <div id="greca_1"></div>
+    <div style="width:1100px; display:block; margin: auto auto">
+        <div id="slider" style="margin:60px 0 0 0" ></div>
+     
+     <div style="margin-top: 50px" >
+        <button type="button" class="btn btn-default" id="auto_slide_button">
+            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+        </button>
+        <button type="button"  class="btn btn-default" id="stop_auto_slide_button">
+            <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+        </button>
+        </div>
+      <div id="legend" style="position:absolute; margin-top: 480px; margin-left: 0px"><img src="img/legend.png" height="250"></div>
+      <div id="container" style="position:relative; width: 1100px; height: 750px;"></div>
+    </div>
+  </section>
+  <section id="CREDIT" class="beige">
+    <p style="position:relative; text-align:center; color:#BFB6A7">Credit:<br>
+      Title Design: <a href="http://www.puffpuffproject.com/languages.html" style="color: #BBBBBB">Puffpuff</a><br>
+      Ranging method: <a href="http://en.wikipedia.org/wiki/List_of_countries_by_GDP_(nominal)#/media/File:Map_of_world_countries_by_GDP_(nominal)_in_US$.png" style="color: #BBBBBB">Wiki</a>
+    </p>
+  </section>
+      
+
+    <script>
+
+    var year = 1960;
+    var auto_slide_interval;
+
+    year_slider = d3.slider()
+                .axis(true)
+                .min(1960)
+                .max(2013)
+                .value(1960)
+                .step(1)
+                .on("slide", refreshSwatch);
+
+    d3.select('#slider').call(year_slider);
+
+
+    $(function() {
+/*
+    $("#slider").slider({
+            max: 2013,
+            min: 1960,
+            value: 1960,
+            slide: refreshSwatch,
+            change: refreshSwatch
+    });
+*/
+    refreshSwatch(null, year);
+        
+    });
+
+
+    $(function() {
+      $("#auto_slide_button").click(function()
+        {
+            auto_slide_interval = setInterval(increment, 400);
+            year_slider.value(year);
+        }
+      );
+      $("#stop_auto_slide_button").click(function()
+        {
+            clearInterval(auto_slide_interval);
+        }
+      );
+        
+    });
+
+    function increment() {
+        if (year >= 2013) {
+            clearInterval(auto_slide_interval);
+        } else {
+            year++;
+            refreshSwatch();
+            year_slider.value(year);
+        }
+    }
+
+    var m_map = new Datamap({
+        element: document.getElementById('container'),
+      
+        projection: 'mercator',
+
+        fills: {
+            '0': "#FCF5F2",
+            '1': "#F6E0DA",
+            '2': "#F3D5CD",
+            '3': "#EEC1B4",
+            '4': "#E8AC9B",
+            '5': "#E29782",
+            '6': "#B57968",
+            '7': "#9E6A5B",
+            '8': "#885B4E",
+            '9': "#714C41",
+            '10': "#5A3C34",
+            '11': "#442D27",
+            defaultFill: '#BBBBBB'
+        }, 
+        data: {},
+        geographyConfig: {
+            borderColor: '#DFD6C7',
+            popupTemplate: function(geography, csvdata1) {
+                if (!csvdata1) return;
+                return '<div class="hoverinfo">' + geography.properties.name + '<br> GDP: <strong>' +  csvdata1[year] + '</strong>';},
+            }
+        });
+
+//    var bucketLimits = [1E+04,1E+05,1E+06,1E+07,1E+08,1E+09,1E+10,1E+11];
+
+    var bucketLimits = [1, 10E+09, 20E+09, 50E+09, 100E+09, 200E+09, 500E+09, 1000E+09, 2000E+09, 5000E+09, 10000E+09];
+
+    function refreshSwatch(evt, value) {
+        if(value!=null) {
+            year = value;
+        }
+        //year = year.toString();
+
+        d3.csv("GDP.csv", function(error, csvdata1) {
+
+            for (var i=0;i<csvdata1.length;i++) { 
+                csvdata1[i].fillKey = {};
+
+                var GDP_value = csvdata1[i][year];
+
+                if (GDP_value < bucketLimits[0]) {  csvdata1[i].fillKey = '0'; }
+                if (GDP_value >= bucketLimits[0] && GDP_value < bucketLimits[1]) {  csvdata1[i].fillKey = '1'; }
+                if (GDP_value >= bucketLimits[1] && GDP_value < bucketLimits[2]) {  csvdata1[i].fillKey = '2'; }
+                if (GDP_value >= bucketLimits[2] && GDP_value < bucketLimits[3]) {  csvdata1[i].fillKey = '3'; }
+                if (GDP_value >= bucketLimits[3] && GDP_value < bucketLimits[4]) {  csvdata1[i].fillKey = '4'; }
+                if (GDP_value >= bucketLimits[4] && GDP_value < bucketLimits[5]) {  csvdata1[i].fillKey = '5'; }
+                if (GDP_value >= bucketLimits[5] && GDP_value < bucketLimits[6]) {  csvdata1[i].fillKey = '6'; }
+                if (GDP_value >= bucketLimits[6] && GDP_value < bucketLimits[7]) {  csvdata1[i].fillKey = '7'; }
+                if (GDP_value >= bucketLimits[7] && GDP_value < bucketLimits[8]) {  csvdata1[i].fillKey = '8'; }
+                if (GDP_value >= bucketLimits[8] && GDP_value < bucketLimits[9]) {  csvdata1[i].fillKey = '9'; }
+                if (GDP_value >= bucketLimits[9] && GDP_value < bucketLimits[10]) {  csvdata1[i].fillKey = '10'; }
+                if (GDP_value >= bucketLimits[10] ) {  csvdata1[i].fillKey = '11'; }
+
+                csvdata1[csvdata1[i].Code] = csvdata1[i];
+                delete csvdata1[i].Code;
+                delete csvdata1[i];
+            }
+            m_map.updateChoropleth(csvdata1);
+        });
+    }
+/*
+
+*/
+
+</script>
+</body>
+</html>
