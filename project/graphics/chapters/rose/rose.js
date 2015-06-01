@@ -12,10 +12,7 @@ function Rose( width, height ) {
   this.subLines = new Array();
   
   this.count = 0;
-  
-  this.reverse = false;
-  this.curColor;
-  this.h = 0.1;
+  this.curColor = 0x000000;
   
   this.start = function() {
     this.readPoints( "chapters/rose/points.txt", this.linesData, 
@@ -30,15 +27,16 @@ function Rose( width, height ) {
     this.renderer.setSize( this.width, this.height );
     document.body.appendChild( this.renderer.domElement );
 
-    this.curColor = new THREE.Color( 0x0000ff );
     var geometry, subGeometry;
     for (var i = 0; i < this.linesData.length; i++) {
       if ( i%2 == 0 ) {
+        
+        this.curColor += 32;
         for( var j=0; j<this.linesData[i].length-2; j++ ) {
           var deltaX = (this.linesData[i][j+2].x - this.linesData[i][j+1].x)/20.0;
           var deltaY = (this.linesData[i][j+2].y - this.linesData[i][j+1].y)/20.0;
           
-          for (var k=0; k<20; k++) {
+          for (var k=0; k<20; k++) {    
             subGeometry = new THREE.Geometry();
             subGeometry.vertices = [this.linesData[i][j], 
                                     new THREE.Vector3( this.linesData[i][j+1].x+deltaX*k,
@@ -58,24 +56,10 @@ function Rose( width, height ) {
   this.render = function() {
     requestAnimationFrame( this.render.bind(this) );
     if (this.count < this.subLines.length) {
-      if (this.h >= 0.3) {
-        this.reverse = true;
-      }
-      if (this.h <= 0.1) {
-        this.reverse = false;
-      }
-      if (this.reverse) {
-        this.h -= 0.001;
-      } else {
-        this.h += 0.001;
-      }
-      this.subLines[this.count].material.color.setHSL(0.67, 1.0, this.h);
       this.scene.add(this.subLines[this.count]);
       this.count++;
-    } else {
-      this.count = 0;
     }
-      this.renderer.render(this.scene, this.camera);
+    this.renderer.render(this.scene, this.camera);
   }
   
   this.readPoints = function( file, linesData, callback ) {
