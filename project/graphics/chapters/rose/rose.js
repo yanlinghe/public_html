@@ -69,7 +69,7 @@ function Rose( width, height ) {
       } else {
         this.h += 0.001;
       }
-      this.subLines[this.count].material.color.setHSL(0.67, 1.0, this.h);
+//      this.subLines[this.count].material.color.setHSL(0.67, 1.0, this.h);
       this.scene.add(this.subLines[this.count]);
       this.count++;
     } else {
