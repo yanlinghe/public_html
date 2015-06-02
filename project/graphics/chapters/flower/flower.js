@@ -1,4 +1,4 @@
-function Rose( width, height ) {
+function Flower( width, height ) {
   this.width = width;
   this.height = height;
   
@@ -9,13 +9,14 @@ function Rose( width, height ) {
   
   this.linesData = new Array();
   this.lines = new Array();
-  this.subLines = new Array();
   
   this.count = 0;
-  this.curColor = 0x000000;
+  this.h = 0.8;
+  this.reverse = false;
+  this.curColor = new THREE.Color(0.82, 0.43, this.h);
   
   this.start = function() {
-    this.readPoints( "chapters/rose/points.txt", this.linesData, 
+    this.readPoints( "chapters/flower/points/tulip.txt", this.linesData, 
                     function() {
                       this.init();
                       this.render();
@@ -27,36 +28,36 @@ function Rose( width, height ) {
     this.renderer.setSize( this.width, this.height );
     document.body.appendChild( this.renderer.domElement );
 
-    var geometry, subGeometry;
+    var geometry;
+    var subDivision = 10;
     for (var i = 0; i < this.linesData.length; i++) {
-      if ( i%2 == 0 ) {
-        
-        this.curColor += 32;
-        for( var j=0; j<this.linesData[i].length-2; j++ ) {
-          var deltaX = (this.linesData[i][j+2].x - this.linesData[i][j+1].x)/20.0;
-          var deltaY = (this.linesData[i][j+2].y - this.linesData[i][j+1].y)/20.0;
+      this.h -= 0.003;
+      this.curColor.setHSL(0.9, 0.5, this.h);
+      for( var j=0; j<this.linesData[i].length-2; j++ ) {
+        var deltaX = (this.linesData[i][j+2].x - this.linesData[i][j+1].x)/subDivision;
+        var deltaY = (this.linesData[i][j+2].y - this.linesData[i][j+1].y)/subDivision;
           
-          for (var k=0; k<20; k++) {    
-            subGeometry = new THREE.Geometry();
-            subGeometry.vertices = [this.linesData[i][j], 
-                                    new THREE.Vector3( this.linesData[i][j+1].x+deltaX*k,
-                                                     this.linesData[i][j+1].y+deltaY*k, 0)
-                                   ];
-            var subline = new THREE.Line( subGeometry, new THREE.LineBasicMaterial( { color: this.curColor } ) );
-            this.subLines.push(subline);
-          }
+        for (var k=0; k<subDivision; k++) {    
+          geometry = new THREE.Geometry();
+          geometry.vertices = [this.linesData[i][j], 
+                              new THREE.Vector3( this.linesData[i][j+1].x+deltaX*k,
+                                                 this.linesData[i][j+1].y+deltaY*k, 0)
+                               ];
+          var subline = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: this.curColor } ) );
+          this.lines.push(subline);
+//          this.scene.add(subline);
         }
       }
       
     }
     
-    this.camera.position.z = 2000; 
+    this.camera.position.z = 350; 
   }
   
   this.render = function() {
     requestAnimationFrame( this.render.bind(this) );
-    if (this.count < this.subLines.length) {
-      this.scene.add(this.subLines[this.count]);
+    if (this.count < this.lines.length) {
+      this.scene.add(this.lines[this.count]);
       this.count++;
     }
     this.renderer.render(this.scene, this.camera);
@@ -81,6 +82,14 @@ function Rose( width, height ) {
           if(lines[1].includes("height")) {
             height = parseInt(lines[1].split(' ')[1]);
           }
+          var ratioX = 1.0, ratioY = 1.0;
+          if (width/height > 800/600) {
+            newWidth = 800;
+            newHeight = height/width*800;
+          } else {
+            newWidth = width/height*600;
+            newHeight = 600;
+          }
           var x =0, y = 0;
           var lineCount = 0;
           for(var line = 2; line < lines.length; line++){
@@ -89,8 +98,8 @@ function Rose( width, height ) {
               lineCount++;
               line++;
             } else {
-              x = parseInt(lines[line].split(' ')[0]) - width/2.0;
-              y = -parseInt(lines[line].split(' ')[1]) + height/2.0 - 90;
+              x = (parseInt(lines[line].split(' ')[0]) - width/2.0)/width * newWidth;
+              y = (-parseInt(lines[line].split(' ')[1]) + height/2.0)/height * newHeight;
               linesData[lineCount - 1].push( new THREE.Vector3( x, y, 0 ));
             }
           }
