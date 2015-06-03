@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <script src="libs/jquery-1.11.3.min.js"></script>
+  <script src="libs/three.min.js"></script>
+  
+  <script src="chapters/flower/flower.js"></script>
+
+  <!--[if (gt IE 8) | (IEMobile)]><!-->
+  <link rel="stylesheet" href="css/style.css">
+  <!--<![endif]-->
+  <!--[if (lt IE 9) & (!IEMobile)]>
+  <link rel="stylesheet" href="css/ie.css">
+  <![endif]-->
+</head>
+<body>
+  <div id="wrapper">
+    <a id="nav-toggle" class="menu-btn" href="#nav"><span></span></a>
+
+    <nav id="nav" class="responsive-menu" role="navigation">
+      <div class="block">
+        <h2 class="block-title">Chapters</h2>
+          <ul>
+            <li>
+              <a href="#">Rose</a>
+              </li><!--
+            --><li>
+              <a href="#">Celtic Construction</a>
+              </li><!--
+            --><li>
+            <a href="#">Chapter 3</a>
+              </li><!--
+            --><li>
+          </ul>
+      </div>
+    </nav>
+  </div>
+  
+  <div id="main">
+    <canvas id="canvas"></canvas>
+    
+    <div id="nav-left" >
+      <a id="nav-left-upper" ></a>
+      <a id="nav-left-lower" ></a>
+    </div>
+  
+    <div id="nav-right" >
+      <a id="nav-right-upper" ></a>
+      <a id="nav-right-lower" ></a>
+    </div>
+  </div>
+  
+</body>
+  
+<script>
+  document.querySelector( "#nav-toggle" )
+  .addEventListener( "click", function() {
+    this.classList.toggle( "active" );
+  });
+  $( '.menu-btn' ).click(function(){
+    $('.responsive-menu').toggleClass('expand')
+  })
+  var flower = new Flower(window.innerWidth, window.innerHeight - 70);;
+  flower.start();
+        
+</script>
+</html>
