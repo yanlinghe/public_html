@@ -7,11 +7,9 @@ function Flower( width, height ) {
   
   this.renderer = new THREE.WebGLRenderer();
   
-  this.sceneSrc = ["chapters/flower/points/lotus.txt", "chapters/flower/points/lotusSobel.txt", "chapters/flower/points/lilyCanny.txt", "chapters/flower/points/hibiscusCanny.txt", "chapters/flower/points/cherryCanny.txt",  "chapters/flower/points/tulip.txt", "chapters/flower/points/rose.txt"];
-  this.sceneHue = [0.72, 0.85, 0.15, 0.93, 0.5, 0.87, 0.66];
-  this.sceneLuminanceDelta = [0.01, 0.002, 0.002, 0.0002, 0.0005, 0.005, 0.02];
-  this.sceneSubDivision = [10, 5, 7, 5, 3, 10, 10];
-  this.sceneDist = [0, 300, 500, 400, 100, 0, 0];
+  this.sceneSrc = ["chapters/flower/points/lotus.txt", "chapters/flower/points/tulip.txt", "chapters/flower/points/rose.txt", "chapters/flower/points/hibiscus.txt"];
+  this.sceneHue = [0.72, 0.87, 0.66, 0.98];
+//  this.sceneLuminanceDelta = [0.01, 0.005, 0.02];
   this.curSceneIdx = 0;
   
   this.start = function() {
@@ -37,9 +35,9 @@ function Flower( width, height ) {
     document.body.appendChild( this.renderer.domElement );
 
     var geometry;
-    var subDivision = this.sceneSubDivision[this.curSceneIdx];
+    var subDivision = 10;
     for (var i = 0; i < this.linesData.length; i++) {
-      this.h += this.sceneLuminanceDelta[this.curSceneIdx];
+      this.h += 0.002;
       this.curColor.setHSL(this.sceneHue[this.curSceneIdx], 0.5, this.h);
       for( var j=0; j<this.linesData[i].length-2; j++ ) {
         var deltaX = (this.linesData[i][j+2].x - this.linesData[i][j+1].x)/subDivision;
@@ -59,7 +57,7 @@ function Flower( width, height ) {
       
     }
     
-    this.camera.position.z = 350; 
+    this.camera.position.z = 400; 
   }
   
   this.render = function() {
@@ -68,14 +66,15 @@ function Flower( width, height ) {
       this.scene.add(this.lines[this.count]);
       this.count++;
     } else {
-      this.renderer.clear();
-      if (this.curSceneIdx < this.sceneSrc.length-1) {
+//      this.count = 0;
+      if (this.curSceneIdx === this.sceneSrc.length-1) {
+        this.curSceneIdx = 0;
+      } else{
         this.curSceneIdx++;
-      } else {
-        this.curSceneIdx=0;
       }
-        this.start( this.sceneSrc[this.curSceneIdx] );
+      this.start();
     }
+      
     this.renderer.render(this.scene, this.camera);
   }
   
@@ -116,21 +115,21 @@ function Flower( width, height ) {
             } else {
               x = (parseInt(lines[line].split(' ')[0]) - width/2.0)/width * newWidth;
               y = (-parseInt(lines[line].split(' ')[1]) + height/2.0)/height * newHeight;
-              if ( linesData[lineCount-1].length>0 ){
-                dist = (linesData[lineCount-1][linesData[lineCount-1].length-1].x - x )*
-                  (linesData[lineCount-1][linesData[lineCount-1].length-1].x - x ) + 
-                  (linesData[lineCount-1][linesData[lineCount-1].length-1].y - y ) *
-                  (linesData[lineCount-1][linesData[lineCount-1].length-1].y - y );
-                if(dist > this.sceneDist[this.curSceneIdx]) {
+//              if ( linesData[lineCount-1].length>0 ){
+//                dist = (linesData[lineCount-1][linesData[lineCount-1].length-1].x - x )*
+//                  (linesData[lineCount-1][linesData[lineCount-1].length-1].x - x ) + 
+//                  (linesData[lineCount-1][linesData[lineCount-1].length-1].y - y ) *
+//                  (linesData[lineCount-1][linesData[lineCount-1].length-1].y - y );
+//                if(dist > 100) {
 //                  linesData.push(new Array());
 //                  lineCount++;
 //                  line++;
 //                } else{
                   linesData[lineCount - 1].push( new THREE.Vector3( x, y, 0 ));
-                }
-              } else {
-                linesData[lineCount - 1].push( new THREE.Vector3( x, y, 0 ));
-              }
+//                }
+//              } else {
+//                linesData[lineCount - 1].push( new THREE.Vector3( x, y, 0 ));
+//              }
             }
           }
           callback();
