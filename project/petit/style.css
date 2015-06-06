@@ -1,0 +1,27 @@
+.main-nav>.inner .nav-level-2 {
+  visibility: hidden;
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 100%;
+  height: auto;
+  border-bottom: 5px solid #000;
+  background-color: #FFF;
+  text-align: left;
+  -webkit-transition: visibility 0s .3s,opacity .3s;
+  transition: visibility 0s .3s,opacity .3s;
+  opacity: 0;
+  overflow-y: hidden;
+}
+
+@media (min-width: 951px)
+.max-girdle-width {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.nav-links-container {
+  position: static;
+}
