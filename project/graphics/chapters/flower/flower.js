@@ -37,7 +37,7 @@ function Flower( width, height ) {
     var geometry;
     var subDivision = 10;
     for (var i = 0; i < this.linesData.length; i++) {
-      this.h += 0.002;
+      this.h += 0.007;
       this.curColor.setHSL(this.sceneHue[this.curSceneIdx], 0.5, this.h);
       for( var j=0; j<this.linesData[i].length-2; j++ ) {
         var deltaX = (this.linesData[i][j+2].x - this.linesData[i][j+1].x)/subDivision;
